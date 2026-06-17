@@ -3,7 +3,7 @@
 	"name": "Context Titles",
 	"version": "0.3.4",
 	"minAppVersion": "1.0.0",
-	"description": "Make duplicate Obsidian note names readable by adding folder context.",
+	"description": "Make duplicate note names readable in graph views by adding folder context.",
 	"author": "Blake Cary",
 	"isDesktopOnly": false
 }
