@@ -1,9 +1,9 @@
 {
-	"id": "context-titles",
-	"name": "Context Titles",
-	"version": "0.3.4",
-	"minAppVersion": "1.0.0",
-	"description": "Make duplicate note names readable in graph views by adding folder context.",
-	"author": "Blake Cary",
-	"isDesktopOnly": false
+  "id": "context-titles",
+  "name": "Context Titles",
+  "version": "0.3.5",
+  "minAppVersion": "1.0.0",
+  "description": "Make duplicate note names readable in graph views by adding folder context.",
+  "author": "Blake Cary",
+  "isDesktopOnly": false
 }
