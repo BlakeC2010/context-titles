@@ -1,0 +1,21 @@
+.context-titles-preview {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+}
+
+.context-titles-preview-row {
+	display: grid;
+	grid-template-columns: minmax(6rem, max-content) 1fr;
+	gap: 0.5rem;
+	margin-block: 0.25rem;
+}
+
+.context-titles-preview-label {
+	color: var(--text-muted);
+}
+
+.context-titles-preview-value {
+	color: var(--text-normal);
+	white-space: normal;
+	word-break: break-word;
+}
