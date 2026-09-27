@@ -18,10 +18,11 @@ export function getGraphDisplayTitles(
 	settings: ContextTitlesSettings,
 ): Map<string, string> {
 	const duplicateBasenameKeys = getDuplicateBasenameKeys(files, settings);
-	const automaticContextDepths =
-		settings.pathMode === 'automatic'
-			? getAutomaticContextDepths(files, settings, duplicateBasenameKeys)
-			: new Map<string, number>();
+	const uniqueContextDepths = getUniqueContextDepths(
+		files,
+		settings,
+		duplicateBasenameKeys,
+	);
 	const displayTitles = new Map<string, string>();
 
 	for (const file of files) {
@@ -31,7 +32,7 @@ export function getGraphDisplayTitles(
 				file,
 				duplicateBasenameKeys,
 				settings,
-				automaticContextDepths.get(file.path),
+				uniqueContextDepths.get(file.path),
 			),
 		);
 	}
@@ -43,7 +44,7 @@ export function getGraphDisplayTitleWithDuplicateKeys(
 	file: TitleSource,
 	duplicateBasenameKeys: ReadonlySet<string>,
 	settings: ContextTitlesSettings,
-	automaticContextDepth?: number,
+	contextDepth?: number,
 ): string {
 	if (!shouldConsiderGraphFile(file, settings)) {
 		return file.basename;
@@ -56,10 +57,10 @@ export function getGraphDisplayTitleWithDuplicateKeys(
 		return file.basename;
 	}
 
-	return generateContextTitle(file, settings, automaticContextDepth);
+	return generateContextTitle(file, settings, contextDepth);
 }
 
-export function getAutomaticContextDepths(
+export function getUniqueContextDepths(
 	files: readonly TitleSource[],
 	settings: ContextTitlesSettings,
 	duplicateBasenameKeys: ReadonlySet<string> = getDuplicateBasenameKeys(
@@ -92,7 +93,10 @@ export function getAutomaticContextDepths(
 
 	for (const group of filesByBasename.values()) {
 		for (const file of group) {
-			contextDepths.set(file.path, 1);
+			contextDepths.set(
+				file.path,
+				getInitialContextDepth(file.path, settings.pathMode),
+			);
 		}
 
 		while (expandCollidingContext(group, contextDepths, settings)) {
@@ -236,6 +240,25 @@ function expandCollidingContext(
 	}
 
 	return expanded;
+}
+
+function getInitialContextDepth(
+	path: string,
+	pathMode: ContextTitlesSettings['pathMode'],
+): number {
+	const maxDepth = Math.max(1, getFolderDepth(path));
+
+	switch (pathMode) {
+		case 'automatic':
+		case 'parent':
+			return 1;
+		case 'last-2':
+			return Math.min(2, maxDepth);
+		case 'last-3':
+			return Math.min(3, maxDepth);
+		case 'full':
+			return maxDepth;
+	}
 }
 
 function getFolderDepth(path: string): number {
