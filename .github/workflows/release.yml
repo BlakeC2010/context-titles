@@ -1,0 +1,74 @@
+name: Release plugin
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - manifest.json
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify release metadata
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./manifest.json').version")
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          VERSION_MIN_APP=$(node -p "require('./versions.json')[require('./manifest.json').version] || ''")
+
+          if [ "$VERSION" != "$PACKAGE_VERSION" ]; then
+            echo "manifest.json ($VERSION) and package.json ($PACKAGE_VERSION) do not match."
+            exit 1
+          fi
+
+          if [ -z "$VERSION_MIN_APP" ]; then
+            echo "versions.json does not contain $VERSION."
+            exit 1
+          fi
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./manifest.json').version")
+
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            echo "Release $VERSION already exists; refusing to replace it."
+            exit 1
+          fi
+
+          gh release create "$VERSION" \
+            main.js \
+            manifest.json \
+            styles.css \
+            --target "$GITHUB_SHA" \
+            --title "Context Titles $VERSION" \
+            --notes "Context Titles $VERSION adds smart unique graph labels. When duplicate notes would still have the same contextual label, the plugin automatically adds only as much extra folder context as needed to distinguish them."
