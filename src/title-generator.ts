@@ -3,6 +3,7 @@ import type { ContextTitlesSettings, PathMode, TitleSource } from './types';
 export function generateContextTitle(
 	file: TitleSource,
 	settings: ContextTitlesSettings,
+	contextDepth?: number,
 ): string {
 	const basename = getBasename(file);
 	const folderSegments = getFolderSegments(file.path);
@@ -15,7 +16,12 @@ export function generateContextTitle(
 		return basename;
 	}
 
-	const contextSegments = selectContextSegments(folderSegments, settings.pathMode);
+	const contextSegments =
+		typeof contextDepth === 'number'
+			? folderSegments.slice(
+					-normalizeContextDepth(contextDepth, folderSegments.length),
+				)
+			: selectContextSegments(folderSegments, settings.pathMode);
 
 	if (contextSegments.length === 0) {
 		return basename;
@@ -84,11 +90,16 @@ function isInsideIgnoredFolder(
 	);
 }
 
+function normalizeContextDepth(depth: number, maxDepth: number): number {
+	return Math.min(Math.max(1, Math.floor(depth)), maxDepth);
+}
+
 function selectContextSegments(
 	folderSegments: readonly string[],
 	pathMode: PathMode,
 ): string[] {
 	switch (pathMode) {
+		case 'automatic':
 		case 'parent':
 			return folderSegments.slice(-1);
 		case 'full':
