@@ -1,9 +1,6 @@
 import { App, TFile, type WorkspaceLeaf } from 'obsidian';
 
-import {
-	getDuplicateBasenameKeys,
-	getGraphDisplayTitleWithDuplicateKeys,
-} from './graph-label-rules';
+import { getGraphDisplayTitles } from './graph-label-rules';
 import type { ContextTitlesSettings } from './types';
 
 const GRAPH_VIEW_TYPES = ['graph', 'localgraph'];
@@ -193,17 +190,10 @@ export class GraphLabelAdapter {
 
 		const settings = this.getSettings();
 		const visibleFiles = fileEntries.map((entry) => entry.file);
-		const duplicateBasenameKeys = getDuplicateBasenameKeys(
-			visibleFiles,
-			settings,
-		);
+		const displayTitles = getGraphDisplayTitles(visibleFiles, settings);
 
 		for (const { node, file } of fileEntries) {
-			const displayTitle = getGraphDisplayTitleWithDuplicateKeys(
-				file,
-				duplicateBasenameKeys,
-				settings,
-			);
+			const displayTitle = displayTitles.get(file.path) ?? file.basename;
 
 			if (this.applyNodeTitle(node, displayTitle, file.basename)) {
 				result.labelsChanged += 1;
