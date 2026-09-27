@@ -31,3 +31,15 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Prepare installable plugin folder
+        shell: bash
+        run: |
+          mkdir -p dist/context-titles
+          cp main.js manifest.json styles.css dist/context-titles/
+
+      - name: Upload installable plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: context-titles-1.0.0
+          path: dist/context-titles
