@@ -99,7 +99,6 @@ function selectContextSegments(
 	pathMode: PathMode,
 ): string[] {
 	switch (pathMode) {
-		case 'automatic':
 		case 'parent':
 			return folderSegments.slice(-1);
 		case 'full':
