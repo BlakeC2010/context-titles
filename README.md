@@ -50,7 +50,7 @@ This fixes the case where two notes have both the same basename and the same imm
 
 ![Context Titles settings](assets/screenshots/context_titles_settings.png)
 
-## What works in v1.0.0
+## What works in v0.3.5
 
 - Graph View and Local Graph display labels.
 - Duplicate-only labeling by default.
@@ -128,7 +128,7 @@ Because that integration depends on Obsidian's internal graph renderer, future O
 
 Other display areas remain intentionally unsupported because they would require additional DOM or internal patching with relatively little benefit:
 
-| Display area | v1.0.0 |
+| Display area | v0.3.5 |
 | --- | --- |
 | Graph View | Supported |
 | Local Graph | Supported |
@@ -171,7 +171,7 @@ Start watch mode:
 npm run dev
 ```
 
-The build writes `main.js` in the project root. Context Titles v1.0.0 requires Obsidian `1.0.0` or newer.
+The build writes `main.js` in the project root. Context Titles v0.3.5 requires Obsidian `1.0.0` or newer.
 
 The repository also includes a GitHub Actions CI workflow that runs install, tests, build, and lint on pushes to `main` and on pull requests.
 
