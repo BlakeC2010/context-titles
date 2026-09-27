@@ -13,7 +13,7 @@ export const DEFAULT_SETTINGS: ContextTitlesSettings = {
 	graphFolderScopeMode: 'include',
 	graphFolderScopePath: '',
 	separator: '-',
-	pathMode: 'automatic',
+	pathMode: 'parent',
 	ignoredFolders: DEFAULT_IGNORED_FOLDERS,
 };
 
