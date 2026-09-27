@@ -1,4 +1,10 @@
-export const PATH_MODES = ['parent', 'full', 'last-2', 'last-3'] as const;
+export const PATH_MODES = [
+	'automatic',
+	'parent',
+	'full',
+	'last-2',
+	'last-3',
+] as const;
 export const GRAPH_LABEL_MODES = ['duplicates-only', 'all'] as const;
 export const GRAPH_FOLDER_SCOPE_MODES = ['exclude', 'include'] as const;
 
