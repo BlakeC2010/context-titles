@@ -249,7 +249,6 @@ function getInitialContextDepth(
 	const maxDepth = Math.max(1, getFolderDepth(path));
 
 	switch (pathMode) {
-		case 'automatic':
 		case 'parent':
 			return 1;
 		case 'last-2':
