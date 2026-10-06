@@ -1,6 +1,6 @@
 {
 	"name": "context-titles",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Make duplicate Obsidian note names readable by adding folder context.",
 	"main": "main.js",
 	"type": "module",
