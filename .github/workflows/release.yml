@@ -9,6 +9,8 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 
 jobs:
   release:
@@ -53,6 +55,14 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Attest release assets
+        uses: actions/attest@v4
+        with:
+          subject-path: |
+            main.js
+            manifest.json
+            styles.css
+
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -71,4 +81,4 @@ jobs:
             styles.css \
             --target "$GITHUB_SHA" \
             --title "Context Titles $VERSION" \
-            --notes "Context Titles $VERSION adds smart unique graph labels. When duplicate notes would still have the same contextual label, the plugin automatically adds only as much extra folder context as needed to distinguish them."
+            --generate-notes
