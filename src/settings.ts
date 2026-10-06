@@ -10,7 +10,6 @@ import { getGraphDisplayTitle } from './graph-label-rules';
 import type ContextTitlesPlugin from './main';
 import { isGraphLabelMode, isPathMode } from './settings-data';
 import type {
-	ContextTitlesSettings,
 	GraphLabelMode,
 	PathMode,
 } from './types';
