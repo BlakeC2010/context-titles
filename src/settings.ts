@@ -2,7 +2,6 @@ import {
 	App,
 	Notice,
 	PluginSettingTab,
-	createFragment,
 	type SettingDefinitionItem,
 } from 'obsidian';
 
@@ -145,7 +144,24 @@ export class ContextTitlesSettingTab extends PluginSettingTab {
 				items: [
 					{
 						name: 'Preview example',
-						desc: this.createPreviewFragment(),
+						desc: 'Shows how the current title settings affect a duplicate note name.',
+						render: (setting) => {
+							setting.descEl.empty();
+							const previewEl = setting.descEl.createDiv({
+								cls: 'context-titles-preview',
+							});
+
+							this.renderPreviewRow(
+								previewEl,
+								'Input path',
+								PREVIEW_FILE.path,
+							);
+							this.previewOutputEl = this.renderPreviewRow(
+								previewEl,
+								'Output title',
+								this.getPreviewTitle(),
+							);
+						},
 					},
 				],
 			},
@@ -231,21 +247,6 @@ export class ContextTitlesSettingTab extends PluginSettingTab {
 		) {
 			this.updatePreview();
 		}
-	}
-
-	private createPreviewFragment(): DocumentFragment {
-		return createFragment((fragment) => {
-			const previewEl = fragment.createDiv({
-				cls: 'context-titles-preview',
-			});
-
-			this.renderPreviewRow(previewEl, 'Input path', PREVIEW_FILE.path);
-			this.previewOutputEl = this.renderPreviewRow(
-				previewEl,
-				'Output title',
-				this.getPreviewTitle(),
-			);
-		});
 	}
 
 	private renderPreviewRow(
